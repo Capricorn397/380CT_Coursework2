@@ -1,7 +1,6 @@
 from random import randint, sample
 from itertools import chain, combinations
 from time import time
-import numpy as np
 """The Class Itself"""
 class SSP():
 	"""Creating the objects needed for the class (Constructors)"""
@@ -50,8 +49,10 @@ class SSP():
 				# add a new subset consisting of the subset at hand added elem
 				power_set=power_set+[list(sub_set)+[elem]]
 				result = [sum(power_set[i]) for i in range(len(power_set))]
-				if result[i] == self.t:
-					return True
+				print(result)
+				for j in range(len(result)):
+					if result[j] == self.t:
+						return True
 		return False
 
 
