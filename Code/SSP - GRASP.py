@@ -1,6 +1,7 @@
 from random import randint, sample
 from itertools import chain, combinations
 import time
+import random
 """The Class Itself"""
 class SSP():
 	"""Creating the objects needed for the class (Constructors)"""
@@ -40,30 +41,49 @@ class SSP():
 			total     = sum(candidate)
 			print( "Trying: ", candidate, ", sum:", total )
 
-	def greedy(self, lngth):
+	def grasp(self, iterations):
 		lis = sorted(self.S)
+		if self.t == 0:
+			return 0
+		best = 0
 		s = 0
-		j = 1
-		for j in range(0, lngth):
-			if s + lis[j] < self.t:
-				s += lis[j]
-		return s
+		a = 0
+		for j in lis:
+			if s + lis[a] < self.t:
+				s += lis[a]
+				a += 1
+		best = s
+		print("Greedy - ")
+		print(best)
+		print("Grasp - ")
+		for i in range(0,iterations):
+			solution = 0
+			lis2 = list(lis)
+			while len(lis2) != 0:
+				choose = random.choice(lis2)
+				lis2.remove(choose)
+				solution += choose
+				if abs(self.t - solution) < abs(self.t - best):
+					print("Updated Best from", best, "to", solution)
+					best = solution
+		return best
 instance = SSP() #Makes an instance of the class SSP
-#j = 4
-#instance.random_yes_instance(j)
-#b = instance.greedy(j)
-#print(list(instance.S))
-#print(b)
-#print(instance.t)
-aver = []
-for t in range(1,100):
-	for s in range(0,19):
-		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
-		#print( instance ) #Outputs the cast of the instance of the class SSP
-		#print(instance.dynamic([], 0, 0, True))
-		start_time = time.time()
-		instance.greedy(t)
-		aver.append(time.time() - start_time)
-		print(aver[-1:])
-	print('average of ',t,' numbers - ',(sum(aver)/20))
-	del aver[:]
+j = 10
+iters = 10
+instance.random_yes_instance(j)
+b = instance.grasp(iters)
+print(list(instance.S))
+print(b)
+print(instance.t)
+#aver = []
+#for t in range(1,30):
+#	for s in range(0,19):
+#		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
+#		#print( instance ) #Outputs the cast of the instance of the class SSP
+#		#print(instance.dynamic([], 0, 0, True))
+#		start_time = time.time()
+#		instance.greedy(t)
+#		aver.append(time.time() - start_time)
+#		print(aver[-1:])
+#	print('average of ',t,' numbers - ',(sum(aver)/20))
+#	del aver[:]
