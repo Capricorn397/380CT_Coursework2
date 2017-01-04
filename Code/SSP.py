@@ -1,6 +1,6 @@
 from random import randint, sample
 from itertools import chain, combinations
-from time import time
+import time
 """The Class Itself"""
 class SSP():
 	"""Creating the objects needed for the class (Constructors)"""
@@ -49,7 +49,7 @@ class SSP():
 				# add a new subset consisting of the subset at hand added elem
 				power_set=power_set+[list(sub_set)+[elem]]
 				result = [sum(power_set[i]) for i in range(len(power_set))]
-				print(result)
+				#print(result)
 				for j in range(len(result)):
 					if result[j] == self.t:
 						return True
@@ -57,7 +57,16 @@ class SSP():
 
 
 instance = SSP() #Makes an instance of the class SSP
-instance.random_yes_instance(4) #Calls the function random_yes_instance inside the class instance with input of 4
-print( instance ) #Outputs the cast of the instance of the class SSP
-print(instance.exhaustive())
-#instance.try_at_random() #Calls the try_at_random function with the instance of the class SSP
+aver = []
+for t in range(1,20):
+	for s in range(0,19):
+		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
+		#print( instance ) #Outputs the cast of the instance of the class SSP
+		#print(instance.exhaustive())
+		#instance.try_at_random() #Calls the try_at_random function with the instance of the class SSP
+		start_time = time.time()
+		instance.exhaustive()
+		aver.append(time.time() - start_time)
+		print(aver[-1:])
+	print('average of ',t,' numbers - ',(sum(aver)/20))
+	del aver[:]
