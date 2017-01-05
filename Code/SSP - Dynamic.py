@@ -40,23 +40,25 @@ class SSP():
 			total     = sum(candidate)
 			print( "Trying: ", candidate, ", sum:", total )
 
-	def dynamic(self, lis, n, su, first):
-		if first == True:
-			lis = self.S
-			n = len(self.S)
-			su = self.t
-		if su == 0:
-			return True
-		if n == 0 and su != 0:
-			return False
-		if lis[n-1] > su:
-			return self.dynamic(lis, n-1, su, False)
-		return self.dynamic(lis, n-1, su, False) | self.dynamic(lis, n-1, su - lis[n-1], False)
-
-
+	def dynamic(self):
+		lis = list(self.S)
+		n = len(self.S)
+		su = self.t
+		print(su)
+		sub = [[0 for x in range(n+1)] for y in range(su+1)]
+		for i in range(0,n+1):
+			sub[0][i] = True
+		for j in range(1, su+1):
+			sub[j][0] = False
+		for k in range(1, su+1):
+			for l in range(1,n+1):
+				sub[k][l] = sub[k][l-1]
+				if k >= lis[l-1]:
+					sub[k][l] = sub[k][l] | sub[k - lis[l-1]][l-1]
+		return sub[su][n]
 instance = SSP() #Makes an instance of the class SSP
 #instance.random_yes_instance(4)
-#print(instance.dynamic([], 0, 0, True))
+#print(instance.dynamic())
 aver = []
 for t in range(1,20):
 	for s in range(0,19):
@@ -64,7 +66,7 @@ for t in range(1,20):
 		#print( instance ) #Outputs the cast of the instance of the class SSP
 		#print(instance.dynamic([], 0, 0, True))
 		start_time = time.time()
-		instance.dynamic([], 0, 0, True)
+		instance.dynamic()
 		aver.append(time.time() - start_time)
 		print(aver[-1:])
 	print('average of ',t,' numbers - ',(sum(aver)/20))
