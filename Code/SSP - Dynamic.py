@@ -24,12 +24,12 @@ class SSP():
 		self.n = len( self.S )
 
 	"""Creates a defined amount of numbers in array S and creates a total (t) from the sum of a random subset of the numbers in S"""
-	def random_yes_instance(self, n, bitlength=10):
+	def random_yes_instance(self, n, bitlength):
 		max_n_bit_number = 2**bitlength-1
 		self.S = sorted( [ randint(0,max_n_bit_number) for i in range(n) ] , reverse=True)
 		self.t = sum( sample(self.S, randint(0,n)) )
 		self.n = len( self.S )
-		###
+
 
 	"""Tests whether a random subset of numbers in S can be equal to t when summed"""
 	def try_at_random(self):
@@ -40,11 +40,11 @@ class SSP():
 			total     = sum(candidate)
 			print( "Trying: ", candidate, ", sum:", total )
 
+	"""Dynamic search to fins if problem can be completed"""
 	def dynamic(self):
 		lis = list(self.S)
 		n = len(self.S)
 		su = self.t
-		print(su)
 		sub = [[0 for x in range(n+1)] for y in range(su+1)]
 		for i in range(0,n+1):
 			sub[0][i] = True
@@ -55,19 +55,29 @@ class SSP():
 				sub[k][l] = sub[k][l-1]
 				if k >= lis[l-1]:
 					sub[k][l] = sub[k][l] | sub[k - lis[l-1]][l-1]
-		return sub[su][n]
+		return sub[su][n] #Return true or false for final point
+
 instance = SSP() #Makes an instance of the class SSP
-#instance.random_yes_instance(4)
-#print(instance.dynamic())
-aver = []
-for t in range(1,20):
-	for s in range(0,19):
-		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
-		#print( instance ) #Outputs the cast of the instance of the class SSP
-		#print(instance.dynamic([], 0, 0, True))
-		start_time = time.time()
-		instance.dynamic()
-		aver.append(time.time() - start_time)
-		print(aver[-1:])
-	print('average of ',t,' numbers - ',(sum(aver)/20))
-	del aver[:]
+aver = [] #Array for storing times
+inp = input("Enter 1 for bitlength, anything else for amount of numbers: ")
+if inp == "1":
+	for t in range(1,21): #Amount of numbers created
+		for s in range(0,19): #Number of repeats of same amount of numbers
+			instance.random_yes_instance(10, t) #Calls the function random_yes_instance inside the class instance with input of t
+			start_time = time.time() #Record start time
+			instance.dynamic() #Run dynamic search
+			aver.append(time.time() - start_time) #Add time taken to list
+			#print(aver[-1:]) #Print time taken
+		print('average of ',t,' bitlength - ',(sum(aver)/20)) #Make average of times and print
+		del aver[:] #Empty List
+
+else:
+	for u in range(1,100): #Amount of numbers created
+		for s in range(0,19): #Number of repeats of same amount of numbers
+			instance.random_yes_instance(u, 10) #Calls the function random_yes_instance inside the class instance with input of t
+			start_time = time.time() #Record start time
+			instance.dynamic() #Run dynamic search
+			aver.append(time.time() - start_time) #Add time taken to list
+			#print(aver[-1:]) #Print time taken
+		print('average of ',u,' numbers - ',(sum(aver)/20)) #Make average of times and print
+		del aver[:] #Empty list

@@ -53,9 +53,6 @@ class SSP():
 				s += lis[a]
 				a += 1
 		best = s
-		print("Greedy - ")
-		print(best)
-		print("Grasp - ")
 		for i in range(0,iterations):
 			solution = 0
 			lis2 = list(lis)
@@ -64,26 +61,30 @@ class SSP():
 				lis2.remove(choose)
 				solution += choose
 				if abs(self.t - solution) < abs(self.t - best):
-					print("Updated Best from", best, "to", solution)
 					best = solution
 		return best
 instance = SSP() #Makes an instance of the class SSP
-j = 10
-iters = 10
-instance.random_yes_instance(j)
-b = instance.grasp(iters)
-print(list(instance.S))
-print(b)
-print(instance.t)
-#aver = []
-#for t in range(1,30):
-#	for s in range(0,19):
-#		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
-#		#print( instance ) #Outputs the cast of the instance of the class SSP
-#		#print(instance.dynamic([], 0, 0, True))
-#		start_time = time.time()
-#		instance.greedy(t)
-#		aver.append(time.time() - start_time)
-#		print(aver[-1:])
-#	print('average of ',t,' numbers - ',(sum(aver)/20))
-#	del aver[:]
+aver = []
+inp = input("Enter 1 for timed, anything else for accuracy: ")
+if inp == "1":
+	for t in range(1,101):
+		for s in range(0,19):
+			instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
+			start_time = time.clock()
+			instance.grasp(10)
+			aver.append(time.clock() - start_time)
+			#print(aver[-1:])
+		print((sum(aver)/20))
+		del aver[:]
+else:
+	for u in range(1,21):
+		for v in range(0,19):
+			instance.random_yes_instance(u)
+			if instance.t != 0:
+				needed = instance.t
+				found = instance.grasp(10)
+				aver.append((found/needed)*100)
+			else:
+				aver.append(100)
+		print(sum(aver)/20)
+		del aver[:]
