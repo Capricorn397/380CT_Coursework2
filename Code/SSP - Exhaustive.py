@@ -41,32 +41,26 @@ class SSP():
 			print( "Trying: ", candidate, ", sum:", total )
 
 	def exhaustive(self):
-		s = self.S
-		power_set=[[]]
-		for elem in s:
-			# iterate over the sub sets so far
-			for sub_set in power_set:
-				# add a new subset consisting of the subset at hand added elem
-				power_set=power_set+[list(sub_set)+[elem]]
-				result = [sum(power_set[i]) for i in range(len(power_set))]
-				#print(result)
-				for j in range(len(result)):
-					if result[j] == self.t:
-						return True
-		return False
+		s = self.S #Create pointer to list
+		power_set=[[]] #Create 2D list for power set
+		for elem in s: #Loop to fill power set
+			for sub_set in power_set: #Loop through subsets
+				power_set=power_set+[list(sub_set)+[elem]] #Add subset from current subset with elem added
+				result = [sum(power_set[i]) for i in range(len(power_set))] #Create summed list
+				for j in range(len(result)): #Loop through summed values
+					if result[j] == self.t: #Test if summed value is equal to target
+						return True #If equal return true
+		return False #If no answer found return false
 
 
 instance = SSP() #Makes an instance of the class SSP
-aver = []
-for t in range(1,20):
-	for s in range(0,19):
-		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
-		#print( instance ) #Outputs the cast of the instance of the class SSP
-		#print(instance.exhaustive())
-		#instance.try_at_random() #Calls the try_at_random function with the instance of the class SSP
-		start_time = time.time()
-		instance.exhaustive()
-		aver.append(time.time() - start_time)
-		print(aver[-1:])
-	print('average of ',t,' numbers - ',(sum(aver)/20))
-	del aver[:]
+aver = [] #List of time taken
+for t in range(1,20): #Array length increasing
+	for s in range(0,19): #Amount of repeats per array length
+		instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of t
+		start_time = time.time() #Record start time
+		instance.exhaustive() #runs exhaustive search on current instance
+		aver.append(time.time() - start_time) #Record time taken
+		#print(aver[-1:]) #print time taken
+	print('average of ',t,' numbers - ',(sum(aver)/20)) #Print average of time taken for a set array length
+	del aver[:] #Empty average list

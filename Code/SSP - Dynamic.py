@@ -40,21 +40,21 @@ class SSP():
 			total     = sum(candidate)
 			print( "Trying: ", candidate, ", sum:", total )
 
-	"""Dynamic search to fins if problem can be completed"""
+	"""Dynamic search to find if problem can be completed"""
 	def dynamic(self):
-		lis = list(self.S)
-		n = len(self.S)
-		su = self.t
-		sub = [[0 for x in range(n+1)] for y in range(su+1)]
-		for i in range(0,n+1):
-			sub[0][i] = True
-		for j in range(1, su+1):
-			sub[j][0] = False
-		for k in range(1, su+1):
-			for l in range(1,n+1):
-				sub[k][l] = sub[k][l-1]
-				if k >= lis[l-1]:
-					sub[k][l] = sub[k][l] | sub[k - lis[l-1]][l-1]
+		lis = list(self.S) #Create a copy of the list
+		n = len(self.S) #Length of the main set
+		su = self.t #The target number
+		sub = [[0 for x in range(n+1)] for y in range(su+1)] #Fill 2D list with correct number of sapces for the problem
+		for i in range(0,n+1): #For the amount of numbers in the main set
+			sub[0][i] = True #Set first column to true
+		for j in range(1, su+1): #For amount of columns
+			sub[j][0] = False #Set all other values to false as placeholder
+		for k in range(1, su+1): #For amount of columns
+			for l in range(1,n+1): #For amount of rows
+				sub[k][l] = sub[k][l-1] #Make value eqaul to one above it
+				if k >= lis[l-1]: #If column is more than or equal to point in rows in the main set
+					sub[k][l] = sub[k][l] | sub[k - lis[l-1]][l-1] #make equal to point or one up and back 
 		return sub[su][n] #Return true or false for final point
 
 instance = SSP() #Makes an instance of the class SSP

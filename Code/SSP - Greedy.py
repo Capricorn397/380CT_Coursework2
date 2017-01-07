@@ -41,13 +41,13 @@ class SSP():
 			print( "Trying: ", candidate, ", sum:", total )
 
 	def greedy(self, lngth):
-		lis = sorted(self.S)
-		s = 0
-		j = 1
-		for j in range(0, lngth):
-			if s + lis[j] < self.t:
-				s += lis[j]
-		return s
+		lis = sorted(self.S,reverse=True)
+		solution = []
+		for i in range(0, len(lis)):
+			choose = lis[i]
+			if (sum(solution) + choose) <= self.t:
+				solution.append(choose)
+		return solution
 instance = SSP() #Makes an instance of the class SSP
 aver = []
 inp = input("Enter 1 for timed, anything else for accuracy: ")
@@ -56,18 +56,18 @@ if inp == "1":
 		for s in range(0,19):
 			instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
 			start_time = time.clock()
-			instance.greedy(t)
+			print(instance.greedy(t))
 			aver.append(time.clock() - start_time)
 			#print(aver[-1:])
 		print('average of ',t,' numbers - ',(sum(aver)/20))
 		del aver[:]
 else:
-	for u in range(1,21):
+	for u in range(1,201):
 		for v in range(0,19):
 			instance.random_yes_instance(u)
 			if instance.t != 0:
 				needed = instance.t
-				found = instance.greedy(u)
+				found = sum(instance.greedy(u))
 				aver.append((found/needed)*100)
 			else:
 				aver.append(100)
