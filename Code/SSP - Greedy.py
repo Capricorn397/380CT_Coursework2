@@ -41,28 +41,28 @@ class SSP():
 			print( "Trying: ", candidate, ", sum:", total )
 
 	def greedy(self, lngth):
-		lis = sorted(self.S,reverse=True)
-		solution = []
-		for i in range(0, len(lis)):
-			choose = lis[i]
-			if (sum(solution) + choose) <= self.t:
-				solution.append(choose)
-		return solution
+		lis = sorted(self.S,reverse=True) #Sort l=set largest to smallest
+		solution = [] #Array for solution
+		for i in range(0, len(lis)): #For length of list
+			choose = lis[i] #Select next value
+			if (sum(solution) + choose) <= self.t: #If chosen value + solution is less than or equal to target
+				solution.append(choose) #Add value to solutiom
+		return solution #Return solution list
 instance = SSP() #Makes an instance of the class SSP
-aver = []
+aver = [] #Array for storing values to be averaged
 inp = input("Enter 1 for timed, anything else for accuracy: ")
 if inp == "1":
-	for t in range(1,101):
-		for s in range(0,19):
+	for t in range(1,101): #Loop for array length
+		for s in range(0,19): #Loop for number of repeats to be averaged
 			instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
-			start_time = time.clock()
-			print(instance.greedy(t))
-			aver.append(time.clock() - start_time)
+			start_time = time.clock() #Record start time
+			print(instance.greedy(t)) #Run greedy search
+			aver.append(time.clock() - start_time) #Record time taken
 			#print(aver[-1:])
-		print('average of ',t,' numbers - ',(sum(aver)/20))
+		print('average of ',t,' numbers - ',(sum(aver)/20)) #Print average of time taken for set array length
 		del aver[:]
 else:
-	for u in range(1,201):
+	for u in range(1,201): #Same as above but testing average accuracy
 		for v in range(0,19):
 			instance.random_yes_instance(u)
 			if instance.t != 0:
