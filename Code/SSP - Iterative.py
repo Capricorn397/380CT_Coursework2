@@ -71,12 +71,10 @@ if inp == "1":
 		for s in range(0,19):
 			instance.random_yes_instance(t) #Calls the function random_yes_instance inside the class instance with input of 4
 			start_time = time.clock()
-			print(instance.iterative(t))
+			instance.iterative(t)
 			aver.append(time.clock() - start_time)
-			#print(aver[-1:])
-		print('average of ',t,' numbers - ',(sum(aver)/20))
+		print(sum(aver)/20)
 		del aver[:]
-
 if inp == "2":
 	instance.random_yes_instance(10)
 	print(instance.t)
@@ -84,7 +82,6 @@ if inp == "2":
 	print(sum(answer))
 	print(answer)
 	print(instance.S)
-
 else:
 	for u in range(1,201):
 		for v in range(0,19):
